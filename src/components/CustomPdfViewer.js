@@ -8,7 +8,7 @@ const Highlight = ({
   tooltip,
   itemData,
   selectedItem,
-  setSelectedItem,
+  onItemSelectHandler,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
@@ -54,7 +54,7 @@ const Highlight = ({
       title={tooltip}
       onMouseEnter={(event) => mouseEnterHandler(event)}
       onMouseLeave={mouseLeaveHandler}
-      onClick={() => setSelectedItem(itemData)}
+      onClick={() => onItemSelectHandler(itemData, itemData.pageNumber)}
     >
       {showTooltip && (
         <div
@@ -115,6 +115,11 @@ console.log({selectedItem})
     }, []);
   };
 
+  const onItemSelectHandler = (item, itemPageNumber) => {
+    setSelectedItem(item)
+    setPageNumber(itemPageNumber)
+  }
+
   return (
     <div id="pdf-container" style={{ position: "relative" }}>
       <div className="d-flex flex-row">
@@ -165,7 +170,9 @@ console.log({selectedItem})
               {tableData.map((item) => (
                 <tr
                   key={item.fieldName}
-                  onClick={() => setSelectedItem(item)}
+                  onClick={() => {
+                    onItemSelectHandler(item, item.pageNumber)
+                  }}
                   style={{
                     cursor: "pointer",
                     backgroundColor:
@@ -199,7 +206,7 @@ console.log({selectedItem})
             key={index}
             itemData={data}
             selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
+            onItemSelectHandler={onItemSelectHandler}
             points={convertPolygonToPoints(data.polygon, 2)}
             tooltip={data.fieldValue}
           />
