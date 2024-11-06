@@ -3,7 +3,13 @@ import { Document, Page } from "react-pdf";
 import "./PDFViewer.css";
 import pdfData from "../assets/files/pdf1JsonData.json";
 
-const Highlight = ({ points, tooltip }) => {
+const Highlight = ({
+  points,
+  tooltip,
+  itemData,
+  selectedItem,
+  setSelectedItem,
+}) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
@@ -20,8 +26,9 @@ const Highlight = ({ points, tooltip }) => {
       (Math.max(...points.map((p) => p[1])) -
         Math.min(...points.map((p) => p[1]))) *
       scale,
-    border: "2px solid yellow",
-    // backgroundColor: "rgba(255, 255, 0, 0.5)", // Highlight color with transparency
+    border: `2px solid ${
+      selectedItem.fieldName === itemData.fieldName ? "red" : "yellow"
+    }`,
     pointerEvents: "auto",
   };
 
@@ -47,6 +54,7 @@ const Highlight = ({ points, tooltip }) => {
       title={tooltip}
       onMouseEnter={(event) => mouseEnterHandler(event)}
       onMouseLeave={mouseLeaveHandler}
+      onClick={() => setSelectedItem(itemData)}
     >
       {showTooltip && (
         <div
@@ -74,11 +82,11 @@ const CustomPDFViewer = ({ pdfFile, highlights }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [tableData, setTableData] = useState([]);
   const [pdfJsonData, setPdfJsonData] = useState([]);
-  const [selectedItem, setSelectedItem] = useState({})
+  const [selectedItem, setSelectedItem] = useState({});
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
-
+console.log({selectedItem})
   useEffect(() => {
     setPdfJsonData(pdfData);
     const parsedTableData = Object.entries(
@@ -94,7 +102,7 @@ const CustomPDFViewer = ({ pdfFile, highlights }) => {
         };
       })
       .filter((item) => item.fieldValue && item.polygon);
-    console.log({ parsedTableData });
+    // console.log({ parsedTableData });
     setTableData(parsedTableData);
   }, []);
 
@@ -160,7 +168,10 @@ const CustomPDFViewer = ({ pdfFile, highlights }) => {
                   onClick={() => setSelectedItem(item)}
                   style={{
                     cursor: "pointer",
-                    backgroundColor: selectedItem?.fieldName === item.fieldName ? "red" : "transparent",
+                    backgroundColor:
+                      selectedItem?.fieldName === item.fieldName
+                        ? "red"
+                        : "transparent",
                   }}
                 >
                   <td>{item.fieldName}</td>
