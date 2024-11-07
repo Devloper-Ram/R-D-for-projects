@@ -3,6 +3,7 @@ import { pdfjs } from "react-pdf";
 import CustomPDFViewer from "./components/CustomPdfViewer";
 
 import myPdfFile from "./assets/files/pdf1.pdf";
+import ExcelFileInterface from "./components/ExcelFileInterface";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -49,7 +50,8 @@ function App() {
       <h3>Hello</h3>
       <>
         {/* <CustomPdfInterface /> */}
-        <CustomPDFViewer pdfFile={myPdfFile} highlights={highlights} />
+        {/* <CustomPDFViewer pdfFile={myPdfFile} highlights={highlights} /> */}
+        <ExcelFileInterface />
       </>
     </div>
   );
