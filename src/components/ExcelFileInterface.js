@@ -37,10 +37,8 @@ const ExcelFileInterface = () => {
           })
         })
         console.log(jsonArr)
-        const worksheet = workbook.Sheets[sheetName];
-        const json = XLSX.utils.sheet_to_json(worksheet);
         
-        setJsonData(json);
+        setJsonData(jsonArr);
       };
       reader.readAsArrayBuffer(file);
     }
