@@ -1,4 +1,8 @@
 export const ExcelSheetJsonCellRange = {
+    date: {
+        start: 'E5',
+        end: 'AH5'
+    },
     silo1_income: {
         start: 'E8',
         end: 'AH8'
@@ -55,4 +59,9 @@ export const ExcelSheetJsonCellRange = {
         start: 'E12',
         end: 'AH12'
     },
+}
+
+export const ExcellSheetCellData = {
+    last_month_stock_silo1: 'D38',
+    last_month_stock_silo2: 'D40'
 }
