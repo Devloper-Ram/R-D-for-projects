@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Document, Page } from "react-pdf";
 import "./PDFViewer.css";
-import pdfData from "../assets/files/pdf1JsonData.json";
+import pdfData1 from "../assets/files/pdf1JsonData.json";
+import pdfData2 from "../assets/files/pdf2JsonData.json";
+import pdfData3 from "../assets/files/pdf3JsonData.json";
 
 const Highlight = ({
   points,
@@ -13,7 +15,7 @@ const Highlight = ({
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
-  const scale = 71.8;
+  const scale = 72;
   const style = {
     position: "absolute",
     top: Math.min(...points.map((p) => p[1])) * scale,
@@ -26,9 +28,10 @@ const Highlight = ({
       (Math.max(...points.map((p) => p[1])) -
         Math.min(...points.map((p) => p[1]))) *
       scale,
-    border: `2px solid ${
-      selectedItem.fieldName === itemData.fieldName ? "red" : "yellow"
+    border: `1px solid ${
+      selectedItem.fieldName === itemData.fieldName ? "red" : "green"
     }`,
+    // zIndex: selectedItem.fieldName === itemData.fieldName ? 2 : 1,
     pointerEvents: "auto",
   };
 
@@ -56,7 +59,7 @@ const Highlight = ({
       onMouseLeave={mouseLeaveHandler}
       onClick={() => onItemSelectHandler(itemData, itemData.pageNumber)}
     >
-      {showTooltip && (
+      {/* {showTooltip && (
         <div
           style={{
             position: "absolute",
@@ -72,12 +75,12 @@ const Highlight = ({
         >
           {tooltip}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
 
-const CustomPDFViewer = ({ pdfFile, highlights }) => {
+const CustomPDFViewer = ({ pdfFile }) => {
   const [numPages, setNumPages] = useState();
   const [pageNumber, setPageNumber] = useState(1);
   const [tableData, setTableData] = useState([]);
@@ -88,9 +91,9 @@ const CustomPDFViewer = ({ pdfFile, highlights }) => {
   };
 console.log({selectedItem})
   useEffect(() => {
-    setPdfJsonData(pdfData);
+    setPdfJsonData(pdfData3);
     const parsedTableData = Object.entries(
-      pdfData.analyzeResult.documents[0].fields
+      pdfData3.analyzeResult.documents[0].fields
     )
       .map((item, index) => {
         const [key, value] = item;
@@ -190,15 +193,6 @@ console.log({selectedItem})
         </div>
       </div>
 
-      {/* {highlights
-        .filter((highlight) => highlight.pageNumber === pageNumber)
-        .map((highlight, index) => (
-          <Highlight
-            key={index}
-            points={highlight.points}
-            tooltip={highlight.tooltip}
-          />
-        ))} */}
       {tableData
         .filter((data) => data.pageNumber === pageNumber)
         .map((data, index) => (
